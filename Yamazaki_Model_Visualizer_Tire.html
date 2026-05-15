@@ -331,7 +331,7 @@ for (let j=0; j<M; j++) {
 
 let currentTab = 'sx';
 
-// ===== 計算（先生のモデルそのまま）=====
+// ===== 計算（モデルそのまま）=====
 function compute(sx, sy, mu_s, alfa, beta){
   const w = Math.sqrt(sx * sx + sy * sy) * v0;
   const mu_d = mu_s * ((1 - alfa) * Math.exp(-beta * w) + alfa);
@@ -354,7 +354,7 @@ function compute(sx, sy, mu_s, alfa, beta){
 
       // 弾性応力の算出
       const tx = G * sx * (xs[i] + xe);
-      const ty = G * sy * (ys[j] + ye); // Ys[i] を ys[j] に修正
+      const ty = G * sy * (ys[j] + ye);
       const fe = Math.sqrt(tx * tx + ty * ty);
 
       // 粘着・滑り判定
