@@ -18,6 +18,9 @@ This tool implements the Yamazaki tire friction model, integrating the Brush Mod
 ---
 
 ## 使い方 / Usage
+### ステップ 0 — ブラウザで直接開く（インストール不要）
+
+👉 **https://hiroo718.github.io/yamazaki-model/Yamazaki_Model_Visualizer_Tire.html**
 
 ### ステップ 1 — リポジトリをクローン
 ```bash
