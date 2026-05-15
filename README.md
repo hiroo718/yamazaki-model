@@ -1,39 +1,41 @@
-```markdown
-# Yamazaki Model Visualizer
-### Interactive Tire Contact Force Simulator — Brush & Hertz Model
+# Yamazaki Model Visualizer — ABS Edition
+### Interactive Wheel Slide Protection Simulator
 
-**Author:** Dr. Hiroo Yamazaki — *May 9th 2026*
+**Author:** Dr. Hiroo Yamazaki — *May 16 2026*
 
 ---
 
-ブラウザ上でタイヤ接触力モデルをリアルタイム可視化するスタンドアロンツールです。インストール・サーバー不要。
-A self-contained, zero-dependency browser tool for real-time visualization of tire contact mechanics.
+ブラウザ上でABSまたはWSPシミュレーション結果をリアルタイム可視化するスタンドアロンツールです。インストール・サーバー不要。
+A self-contained, zero-dependency browser tool for real-time visualization of wheel slide protection (ABS/WSP) simulation results.
+
+---
 
 ## 概要 / Overview
 
-本ツールは **山崎モデル** を実装したインタラクティブビジュアライザです。Brush Model（ブラシモデル）、Hertz（ヘルツ）楕円接触圧力、および速度依存動摩擦を統合し、接触楕円内の粘着/すべり域分布・接線力分布・トラクション特性曲線をリアルタイムに計算・描画します。
+本ツールは **山崎モデル** をベースに、ABS（アンチロックブレーキ）/ WSP（車輪滑走防止装置）のシミュレーション結果をアニメーション表示するインタラクティブビジュアライザです。外部CSVファイルから時系列データを読み込み、接触楕円内の粘着/すべり域分布・接線力分布をリアルタイムに描画します。横すべり $s_y$ をスライダーで独立に制御することで、制動中の前後力とコーナリング力の分布を直感的に把握できます。
 
-This tool implements the Yamazaki tire friction model, integrating the Brush Model, Hertz elliptical contact pressure, and velocity-dependent dynamic friction. It renders adhesion/slip zone maps, tangential force distributions, and traction characteristic curves in real time.
+This tool provides an interactive animation of wheel slide protection (ABS/WSP) simulation results based on the Yamazaki tire friction model. It loads time-series data from an external CSV file and renders adhesion/slip zone maps and tangential force distributions in real time. The lateral slip $s_y$ can be independently controlled via a slider, enabling intuitive understanding of cornering force effects during braking.
 
 ---
 
 ## 使い方 / Usage
+
 ### ステップ 0 — ブラウザで直接開く（インストール不要）
 
-👉 **https://hiroo718.github.io/yamazaki-model/Yamazaki_Model_Visualizer_Tire.html**
+👉 **https://hiroo718.github.io/yamazaki-model/Yamazaki_Model_Visualizer_ABS.html**
 
 ### ステップ 1 — リポジトリをクローン
-```bash
-git clone [https://github.com/hiroo718/yamazaki-model.git](https://github.com/hiroo718/yamazaki-model.git)
-cd yamazaki-model
 
+```bash
+git clone https://github.com/hiroo718/yamazaki-model.git
+cd yamazaki-model
 ```
 
 ### ステップ 2 — HTMLファイルをブラウザで開く
 
-* **macOS:** `open Yamazaki_Model_Visualizer_Tire.html`
-* **Windows:** `start Yamazaki_Model_Visualizer_Tire.html`
-* **Linux:** `xdg-open Yamazaki_Model_Visualizer_Tire.html`
+* **macOS:** `open Yamazaki_Model_Visualizer_ABS.html`
+* **Windows:** `start Yamazaki_Model_Visualizer_ABS.html`
+* **Linux:** `xdg-open Yamazaki_Model_Visualizer_ABS.html`
 
 > [!NOTE]
 > サーバーや依存ライブラリのインストールは一切不要です。Chrome / Firefox / Safari / Edge の最新版で即座に動作します。
@@ -41,17 +43,43 @@ cd yamazaki-model
 
 ---
 
+## CSVファイルの読み込み / Loading CSV Data
+
+左パネルの **📂 CSVファイルを読み込む** からABSやWSPのシミュレーション結果を読み込めます。
+
+### CSVフォーマット
+
+```
+time, V, slip, BC
+0.01, 80.0, 0.00069, 23.49
+0.03, 79.9954, 0.00335, 70.47
+...
+```
+
+| 列 | 説明 | 単位 |
+|---|---|---|
+| **time** | 時刻 | s |
+| **V** | 車両速度 | km/h |
+| **slip** | 縦スリップ率 $s_x$ | — |
+| **BC** | ブレーキシリンダ圧力 | kPa |
+
+> [!NOTE]
+> 車輪速度 $V_w$ はCSVに含まれなくても、$V_w = V \times (1 - s_x)$ から自動計算されます。5列形式（time, V, Vw, slip, BC）にも対応しています。
+> Wheel speed $V_w$ is automatically computed as $V_w = V \times (1 - s_x)$ if not included. 5-column format (time, V, Vw, slip, BC) is also supported.
+
+CSVを読み込むとデフォルトのサンプルデータが差し替わり、アニメーションがリセットされます。
+
+---
+
 ## 操作パネル / Control Panel
 
-左側のコントロールスライダーで以下のパラメータをリアルタイムに変更可能です。
-
-| スライダー | 説明 | 範囲 |
-| --- | --- | --- |
-| **$s_x$**（縦スリップ率） | 加減速方向のスリップ。$0$ = 純転がり、$1$ = 完全ロック | $0 \sim 1.0$ |
-| **$s_y$**（横スリップ率） | 横力方向のスリップ（コーナリング相当） | $0 \sim 1.0$ |
-| **$\mu_s$**（静摩擦係数） | 粘着限界を決める最大摩擦係数 | $0.10 \sim 0.60$ |
-| **$\alpha$（alfa）** | 速度無限大での動摩擦比 $\mu_\infty / \mu_0$ | $0 \sim 1.0$ |
-| **$\beta$（beta）** | 動摩擦の速度依存減衰率（Stribeck効果の傾き） | $0.01 \sim 0.30$ |
+| コントロール | 説明 |
+|---|---|
+| **📂 CSVファイルを読み込む** | 外部CSVからシミュレーション結果を読み込む |
+| **▶ 再生 / ■ 停止 / ↺ リセット** | アニメーションの制御 |
+| **⏺ 録画開始 / ⏹ 保存** | アニメーションをwebm動画として保存 |
+| **再生速度** | 1x〜10x の再生速度調整 |
+| **横すべり $s_y$** | コーナリング相当の横スリップ率をリアルタイムに調整（0〜1.0） |
 
 ---
 
@@ -59,122 +87,62 @@ cd yamazaki-model
 
 ```text
 ┌──────────────────┬────────────────┬────────────────┐
-│  粘着/すべり域   │  接線力|f|分布   │  圧力分布p(x,y) │
+│  車両速度        │  車輪速度      │  BC圧          │
+│  V [km/h]        │  Vw [km/h]     │  BC [kPa]      │
+├──────────────────┬────────────────┬────────────────┤
+│  粘着/すべり域   │  接線力|f|分布  │  圧力分布p(x,y)│
 │  Adhesion/Slip   │  Tangential |f| │  Hertz p(x,y)  │
 ├──────────────────┴────────────────┴────────────────┤
-│          トラクション特性曲線 Fx/Fz, Fy/Fz         │
-│          (sx sweep / sy sweep タブ切替)            │
+│          ABS/WSP 時系列応答 (V, Vw, BC)            │
 └────────────────────────────────────────────────────┘
-
 ```
 
-* **粘着/すべり域 (Adhesion/Slip Zone)**
-青 = 粘着域（弾性変形支配）、赤 = すべり域（摩擦力飽和）。スリップ率増加に伴う境界の遷移を直感的に把握できます。
-* **接線力 $|f|$ 分布 (Tangential Force Distribution)**
-$\sqrt{f_x^2 + f_y^2}$ の空間分布をヒートマップ表示。応力の集中箇所を確認できます。
-* **圧力分布 $p(x,y)$ (Normal Pressure Distribution)**
-Hertz 楕円接触に基づく法線力分布。中心ほど高圧になります。
-* **トラクション特性 (Traction Characteristics)**
-$s_x$ または $s_y$ を $0 \to 1$ までスイープした際の無次元化発生力 $F_x/F_z$, $F_y/F_z$ 曲線を表示。
-
----
-
-## モデルの理論 / Model Theory
-
-### 1. Hertz 楕円接触圧力
-
-タイヤと路面の接触形状を楕円形と仮定します。
-
-$$\frac{x^2}{a^2} + \frac{y^2}{b^2} \le 1$$
-
-接触楕円内における法線圧力分布 $p(x,y)$ は、Hertzの接触理論に従い以下のように定式化されます。
-
-$$p(x,y) = \frac{3F_z}{2\pi ab} \sqrt{1 - \frac{x^2}{a^2} - \frac{y^2}{b^2}}$$
-
-### 2. Brush Model — 弾性せん断応力
-
-粘着域（Adhesion zone）では、トレッドゴムの接触点が接触楕円前端から後端へ移動する間に、スリップ率に応じた弾性変形（ひずみ）が蓄積されます。
-
-$$f_{x,e}(x,y) = G \cdot s_x \left(x + x_e(y)\right)$$
-
-$$f_{y,e}(x,y) = G \cdot s_y \left(y + y_e(x)\right)$$
-
-ここで、$x_e(y) = a\sqrt{1-(y/b)^2}$ および $y_e(x) = b\sqrt{1-(x/a)^2}$ は接触楕円の前端座標を表し、$G$ はタイヤゴムのせん断弾性率です。
-
-### 3. 粘着・すべり判定
-
-各メッシュ点において、蓄積された弾性応力が静摩擦限界を超えるかどうかで粘着・すべりの状態を判定します。
-
-$$\text{すべり域 (Slip Zone Condition):} \quad \sqrt{f_{x,e}^2 + f_{y,e}^2} > \mu_s \cdot p(x,y)$$
-
-すべり域に達した座標では、接線力の大きさは動摩擦力によって制限され、その方向は弾性変形方向（$\mathbf{f}_e$）を維持します。
-
-$$\mathbf{f}_{\text{slip}} = \mu_d(w) \cdot p(x,y) \cdot \frac{\mathbf{f}_e}{|\mathbf{f}_e|}$$
-
-### 4. 速度依存動摩擦係数
-
-動摩擦係数 $\mu_d$ は、トレッドゴムと路面の局所的なすべり速度 $w$ に依存して低下します（Stribeck 効果のモデル化）。
-
-$$\mu_d(w) = \mu_s \left[ (1-\alpha)e^{-\beta w} + \alpha \right]$$
-
-ここで、局所すべり速度 $w$ は車両速度 $v_0$ と合成スリップ率から以下のように計算されます。
-
-$$w = \sqrt{s_x^2 + s_y^2} \cdot v_0$$
-
-* $\alpha = 1.0$ のとき、Coulomb 摩擦（速度非依存：$\mu_d = \mu_s$）となります。
-* $\alpha < 1.0$ のとき、摩擦係数はすべり速度の増加とともに減衰し、最終的に $\alpha\mu_s$（すなわち $\mu_\infty$）へと漸近します。
-
-### 5. 合力の計算
-
-接触面全体で発生している局所接線力を積分し、タイヤ全体に作用する無次元化された合力を求めます。
-
-$$\frac{F_x}{F_z} = \frac{1}{F_z} \iint_{\Omega} f_x(x,y) \,dx\,dy, \qquad \frac{F_y}{F_z} = \frac{1}{F_z} \iint_{\Omega} f_y(x,y) \,dx\,dy$$
+* **車両速度 / 車輪速度 / BC圧メーター** — 現在の時刻における各量をアナログメーターで表示
+* **粘着/すべり域** — 青 = 粘着域、赤 = すべり域。制動力の飽和状況をリアルタイムに把握
+* **接線力 $|f|$ 分布** — $\sqrt{f_x^2 + f_y^2}$ のヒートマップ表示
+* **圧力分布 $p(x,y)$** — Hertz 楕円接触に基づく法線力分布
+* **ABS/WSP 時系列応答** — $V$（車両速度）、$V_w$（車輪速度）、BC圧の時刻歴を同時表示
 
 ---
 
 ## 固定パラメータ / Fixed Parameters
 
+本ツールでは以下のパラメータが固定値として設定されています。
+
 | 記号 | 値 | 説明 / Description |
-| --- | --- | --- |
+|---|---|---|
 | **$a$** | $50\text{ mm}$ | 接触楕円 半長軸（進行方向） / Semi-major axis (longitudinal) |
 | **$b$** | $74\text{ mm}$ | 接触楕円 半短軸（横方向） / Semi-minor axis (lateral) |
-| **$F_z$** | $\approx 4448\text{ N}$ | 垂直荷重（$1815\text{ kg}$ 車両の1輪分相当：$1815g/4$） / Normal load |
-| **$G$** | $10\text{ MPa}$ | タイヤゴムの横せん断弾性係数 / Shear modulus of tire rubber |
-| **$v_0$** | $80\text{ km/h}$ | 基準車速 / Vehicle speed |
-| **$N, M$** | $60 \times 60$ | 計算メッシュ数（解像度とリアルタイム性のトレードオフ） / Mesh resolution |
+| **$F_z$** | $\approx 4448\text{ N}$ | 垂直荷重（$1815\text{ kg}$ 車両の1輪分） / Normal load |
+| **$G$** | $10\text{ MPa}$ | タイヤゴムの横せん断弾性係数 / Shear modulus |
+| **$v_0$** | $80\text{ km/h}$ | 基準車速 / Reference vehicle speed |
+| **$\mu_s$** | $0.30$ | 静摩擦係数 / Static friction coefficient |
+| **$\alpha$** | $0.20$ | 速度無限大での動摩擦比 / Dynamic friction ratio at infinite speed |
+| **$\beta$** | $0.05$ | 動摩擦の速度依存減衰率 / Velocity-dependent decay rate |
+| **$N, M$** | $60 \times 60$ | 計算メッシュ数 / Mesh resolution |
 
 ---
 
-## ファイル構成 / Repository Structure
+## モデルの理論 / Model Theory
 
-```text
-yamazaki-model/
-├── Yamazaki_Model_Visualizer_Tire.html   # メインビジュアライザ (HTML5/JS) / Main visualizer
-└── CITATION.cff                           # 引用情報 / Citation metadata
+接触力の計算には **山崎モデル**（Brush Model + Hertz 楕円接触 + 速度依存動摩擦）を使用しています。
+詳細な理論については
+https://github.com/hiroo718/yamazaki-model
+の [`README.md`](./README.md) を参照してください。
 
-```
+For the theoretical background of the contact force model (Brush Model, Hertz contact, velocity-dependent friction),
+please refer to [`README.md`](./README.md) in https://github.com/hiroo718/yamazaki-model.
 
 ---
 
 ## 引用 / Citation
 
-本ツールを研究、論文、または学会発表等に使用する場合は、以下のメタデータ（または `CITATION.cff`）を参照して引用してください。
+本ツールを研究、論文、または学会発表等に使用する場合は、`CITATION.cff` を参照して引用してください。
 
 *If you use this tool in your research, please cite it using the metadata in `CITATION.cff`.*
 
-## Contact
-For questions or feedback, feel free to open a [Discussion](https://github.com/hiroo718/yamazaki-model/discussions) or contact: yamazaki.hiroo@gmail.com
-
 ---
 
-## 参考文献 / References
+## Contact
 
-1. 山崎大生. 動摩擦係数を考慮した 3 次元接触理論に基づく粘着力のモデル化. 日本機械学会論文集（C編）, 76巻770号, (2010), pp.82-87.
-Yamazaki, H. Adhesion Model Based on Hertz Contact Theory Using Coefficient of Dynamic Friction. Transactions of the Japan Society of Mechanical Engineers, Series C, Vol. 76, No. 770, (2010), 82-87 (In Japanese)
-[J-STAGE](https://www.jstage.jst.go.jp/article/kikaic1979/76/770/76_KJ00006661717/_pdf/-char/ja)
-2. Masato Abe, VEHICLE HANDLING DYNAMICS, Butterworth-Heinemann, (2015), p.28-39.
-3. O. Polach, Creep forces in simulations of traction vehicles running on adhesion limit, Wear, Vol.258, (2005), pp.992–1000.
-4. Ahmed A. Shabana, Khaled E. Zaazaa and Hiroyuki Sugiyama, Railroad Vehicle Dynamics A Computational Approach, CRC Press, (2008), pp.133-159.
-```
-
-```
+For questions or feedback, feel free to open a [Discussion](https://github.com/hiroo718/yamazaki-model/discussions) or contact: yamazaki.hiroo@gmail.com
