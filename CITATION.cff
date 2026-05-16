@@ -3,7 +3,7 @@ message: "If you use this software, please cite it as below."
 authors:
   - family-names: "Yamazaki"
     given-names: "Hiroo"
-title: "Tire_modero and Railway Adhesion model based on brush and Hertz contact considering dynamic friction coefficient"
+title: "Tire_model and Railway Adhesion model based on brush and Hertz contact considering dynamic friction coefficient"
 version: 1.0.0
 date-released: 2026-05-9
 url: "https://github.com/hiroo718/yamazaki-model"
