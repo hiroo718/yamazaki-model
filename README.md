@@ -168,13 +168,14 @@ For questions or feedback, feel free to open a [Discussion](https://github.com/h
 ---
 
 ## 参考文献 / References
-
-1. 山崎大生. 動摩擦係数を考慮した 3 次元接触理論に基づく粘着力のモデル化. 日本機械学会論文集（C編）, 76巻770号, (2010), pp.82-87.
+1. Yamazaki, H., Nagai, M. and Kamada, T., A Study of Adhesion Force Model for Wheel Slip Prevention Control, JSME International Journal, Series C, Vol. 47, No. 2, (2004), pp.496-501.
+[J-STAGE](https://www.jstage.jst.go.jp/article/jsmec/47/2/47_2_496/_article)
+2. 山崎大生. 動摩擦係数を考慮した 3 次元接触理論に基づく粘着力のモデル化. 日本機械学会論文集（C編）, 76巻770号, (2010), pp.82-87.
 Yamazaki, H. Adhesion Model Based on Hertz Contact Theory Using Coefficient of Dynamic Friction. Transactions of the Japan Society of Mechanical Engineers, Series C, Vol. 76, No. 770, (2010), 82-87 (In Japanese)
 [J-STAGE](https://www.jstage.jst.go.jp/article/kikaic1979/76/770/76_KJ00006661717/_pdf/-char/ja)
-2. Masato Abe, VEHICLE HANDLING DYNAMICS, Butterworth-Heinemann, (2015), p.28-39.
-3. O. Polach, Creep forces in simulations of traction vehicles running on adhesion limit, Wear, Vol.258, (2005), pp.992–1000.
-4. Ahmed A. Shabana, Khaled E. Zaazaa and Hiroyuki Sugiyama, Railroad Vehicle Dynamics A Computational Approach, CRC Press, (2008), pp.133-159.
+3. Masato Abe, VEHICLE HANDLING DYNAMICS, Butterworth-Heinemann, (2015), p.28-39.
+4. O. Polach, Creep forces in simulations of traction vehicles running on adhesion limit, Wear, Vol.258, (2005), pp.992–1000.
+5. Ahmed A. Shabana, Khaled E. Zaazaa and Hiroyuki Sugiyama, Railroad Vehicle Dynamics A Computational Approach, CRC Press, (2008), pp.133-159.
 ```
 
 ```
