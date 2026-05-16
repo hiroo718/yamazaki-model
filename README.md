@@ -176,6 +176,8 @@ Yamazaki, H. Adhesion Model Based on Hertz Contact Theory Using Coefficient of D
 3. Masato Abe, VEHICLE HANDLING DYNAMICS, Butterworth-Heinemann, (2015), p.28-39.
 4. O. Polach, Creep forces in simulations of traction vehicles running on adhesion limit, Wear, Vol.258, (2005), pp.992–1000.
 5. Ahmed A. Shabana, Khaled E. Zaazaa and Hiroyuki Sugiyama, Railroad Vehicle Dynamics A Computational Approach, CRC Press, (2008), pp.133-159.
+6.  Ohyama, T., Study on Influences of Contact Condition between Wheel and Rail on Adhesion Force and Its Improvement at Higher Speeds, RTRI REPORT, (in Japanese), Vol.1, No.2 (1987), pp.11–22, 34–35, Railway Technical Research Institute.
+7. Kalker, J.J., Survey of Wheel-Rail Rolling Contact Theory, Vehicle System Dynamics 5, (1979), pp.317–358.
 ```
 
 ```
