@@ -156,6 +156,8 @@ yamazaki-model/
 └── CITATION.cff                           # 引用情報 / Citation metadata
 
 ```
+## AI Assistance
+The visualization was developed with the assistance of AIs and theoretical formulation of lateral direction was discussed with AIs, as well.
 
 ---
 
