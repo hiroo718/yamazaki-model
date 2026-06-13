@@ -14,9 +14,12 @@ A self-contained, zero-dependency browser tool for real-time visualization of ti
 
 ## 概要 / Overview
 
-本ツールは **山崎モデル** を実装したインタラクティブビジュアライザです。Brush Model（ブラシモデル）、Hertz（ヘルツ）楕円接触圧力、および速度依存動摩擦を統合し、接触楕円内の粘着/すべり域分布・接線力分布・トラクション特性曲線をリアルタイムに計算・描画します。
+本ツールは **山崎モデル** を実装したインタラクティブビジュアライザです。Brush Model（ブラシモデル）、Hertz（ヘルツ）楕円接触圧力、
+および速度依存動摩擦を統合し、接触楕円内の粘着/すべり域分布・接線力分布・トラクション特性曲線をリアルタイムに計算・描画します。
 
-This tool implements the Yamazaki tire friction model, integrating the Brush Model, Hertz elliptical contact pressure, and velocity-dependent dynamic friction. It renders adhesion/slip zone maps, tangential force distributions, and traction characteristic curves in real time.
+This tool implements the Yamazaki tire friction model, integrating the Brush Model, Hertz elliptical contact pressure,
+ and velocity-dependent dynamic friction. It renders adhesion/slip zone maps, tangential force distributions,
+ and traction characteristic curves in real time.
 
 本モデル（Yamazaki Model）は、実測データ（Sakai Tire）に対して高い精度でフィッティングすることが確認されています。
 
