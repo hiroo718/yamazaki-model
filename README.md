@@ -18,8 +18,6 @@ A self-contained, zero-dependency browser tool for real-time visualization of ti
 
 This tool implements the Yamazaki tire friction model, integrating the Brush Model, Hertz elliptical contact pressure, and velocity-dependent dynamic friction. It renders adhesion/slip zone maps, tangential force distributions, and traction characteristic curves in real time.
 
-## モデル検証データの例 / Model Validation Example
-
 本モデル（Yamazaki Model）は、実測データ（Sakai Tire）に対して高い精度でフィッティングすることが確認されています。
 
 ![Yamazaki Model vs Sakai Tire](sakai_yamazaki.png)
