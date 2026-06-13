@@ -20,7 +20,7 @@ This tool implements the Yamazaki tire friction model, integrating the Brush Mod
 
 <div class="model-reference-graph" style="text-align: center; margin: 20px 0;">
     <h3>モデル検証データの例 (Yamazaki Model vs Sakai Tire)</h3>
-    <img src="sakai_vs_yamazaki.png" alt="Yamazaki Model vs Sakai Tire Graph" style="max-width: 100%; height: auto; border: 1px solid #ccc; border-radius: 4px;">
+    <img src="sakai_yamazaki.png" alt="Yamazaki Model vs Sakai Tire Graph" style="max-width: 100%; height: auto; border: 1px solid #ccc; border-radius: 4px;">
     <p style="font-size: 0.9em; color: #555;">図：Sakai Tireの実測値（●）に対するYamazakiモデル（実線）のフィッティング特性</p>
 </div>
 ---
