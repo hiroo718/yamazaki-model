@@ -31,6 +31,7 @@ This tool implements the Yamazaki tire friction model, integrating the Brush Mod
 Fz = 3923[N], a, b = 0.1, 0.12 [m]
 mus = 1.15, alfa= 0.1, beta= 0.005
 Kx, Ky = 7e6 [Pa]
+![Comparison](figure2.gif)
 
 ---
 
