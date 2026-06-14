@@ -134,13 +134,8 @@ $$
 接触楕円内における法線圧力分布
 
 $$
-p(x,y)
-=
-\frac{3F_z}{2\pi ab}
-\sqrt{
-1-\frac{x^2}{a^2}
--\frac{y^2}{b^2}
-}
+$$
+p(x,y)=\frac{3F_z}{2\pi ab}\sqrt{1-\frac{x^2}{a^2}-\frac{y^2}{b^2}}
 $$
 
 ### 2. Brush Model — 弾性せん断応力
