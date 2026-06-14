@@ -23,7 +23,7 @@ This tool implements the Yamazaki tire friction model, integrating the Brush Mod
 
 本モデル（Yamazaki Model）は、実測データ（Sakai Tire）に対して高い精度でフィッティングすることが確認されています。
 
-![Comparison](sakai.png)
+![Comparison]([sakai.png](https://github.com/hiroo718/yamazaki-model/blob/main/sakai.png))
 
 *図：Sakai Tireの実測値（●）に対するYamazakiモデル（実線）のフィッティング特性*
 ---
