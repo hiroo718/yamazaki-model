@@ -33,10 +33,10 @@ mus = 1.15, alfa= 0.1, beta= 0.005
 Kx, Ky = 7e6 [Pa]
 
 ![Comparison](figure2.gif)
-    Fz = 3923[N], V = 20 [km/h], a, b = 0.1, 0.1215 [m]
-    vy = 0.305 [m/s]
-    mus = 1.15, alfa= 0.1, beta = 0.001
-    Kx = 3.3*1e5, Ky = 6.6*1e5
+
+Fz = 3923[N], V = 20 [km/h], a, b = 0.1, 0.1215 [m]
+vy = 0.305 [m/s], mus = 1.15, alfa= 0.1, beta = 0.001
+Kx = 3.3*1e5, Ky = 6.6*1e5
 
 ---
 
