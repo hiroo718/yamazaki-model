@@ -131,39 +131,19 @@ $$\frac{x^2}{a^2}+\frac{y^2}{b^2}\le1$$
 
 接触楕円内における法線圧力分布
 
-$$
-$$
-p(x,y)=\frac{3F_z}{2\pi ab}\sqrt{1-\frac{x^2}{a^2}-\frac{y^2}{b^2}}
-$$
+$$p(x,y)=\frac{3F_z}{2\pi ab}\sqrt{1-\frac{x^2}{a^2}-\frac{y^2}{b^2}}$$
 
 ### 2. Brush Model — 弾性せん断応力
 
-$$
-f_{x,e}(x,y)
-=
-G\,s_x\left(x+x_e(y)\right)
-$$
+$$f_{x,e}(x,y)=G\,s_x\left(x+x_e(y)\right)$$
 
-$$
-f_{y,e}(x,y)
-=
-G\,s_y\left(y+y_e(x)\right)
-$$
+$$f_{y,e}(x,y)=G\,s_y\left(y+y_e(x)\right)$$
 
 ### 3. 粘着・すべり判定
 
-$$
-\sqrt{f_{x,e}^2+f_{y,e}^2}
->
-\mu_s\,p(x,y)
-$$
+$$\sqrt{f_{x,e}^2+f_{y,e}^2}>\mu_s\,p(x,y)$$
 
-$$
-\mathbf{f}_{slip}
-=
-\mu_d(w)\,p(x,y)
-\frac{\mathbf{f}_e}{|\mathbf{f}_e|}
-$$
+$$\mathbf{f}_{slip}=\mu_d(w)\,p(x,y)\frac{\mathbf{f}_e}{|\mathbf{f}_e|}$$
 
 ### 4. 速度依存動摩擦係数
 
