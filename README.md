@@ -28,6 +28,9 @@ This tool implements the Yamazaki tire friction model, integrating the Brush Mod
 ![Comparison](figure1.gif)
 
 *図：Sakai Tireの実測値（●）に対する Yamazaki モデル（実線）のフィッティング特性*
+Fz = 3923[N], a, b = 0.1, 0.12 [m]
+mus = 1.15, alfa= 0.1, beta= 0.005
+Kx, Ky = 7e6 [Pa]
 
 ---
 
