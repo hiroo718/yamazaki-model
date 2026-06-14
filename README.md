@@ -147,37 +147,15 @@ $$\mathbf{f}_{slip}=\mu_d(w)\,p(x,y)\frac{\mathbf{f}_e}{|\mathbf{f}_e|}$$
 
 ### 4. 速度依存動摩擦係数
 
-$$
-\mu_d(w)
-=
-\mu_s
-\left[
-(1-\alpha)e^{-\beta w}
-+\alpha
-\right]
-$$
+$$\mu_d(w)=\mu_s\left[(1-\alpha)e^{-\beta w}+\alpha\right]$$
 
-$$
-w
-=
-\sqrt{s_x^2+s_y^2}\,v_0
-$$
+$$w=\sqrt{s_x^2+s_y^2}\,v_0$$
 
 ### 5. 合力の計算
 
-$$
-\frac{F_x}{F_z}
-=
-\frac{1}{F_z}
-\iint_\Omega f_x(x,y)\,dx\,dy
-$$
+$$\frac{F_x}{F_z}=\frac{1}{F_z}\iint_\Omega f_x(x,y)\,dx\,dy$$
 
-$$
-\frac{F_y}{F_z}
-=
-\frac{1}{F_z}
-\iint_\Omega f_y(x,y)\,dx\,dy
-$$
+$$\frac{F_y}{F_z}=\frac{1}{F_z}\iint_\Omega f_y(x,y)\,dx\,dy$$
 
 ---
 
