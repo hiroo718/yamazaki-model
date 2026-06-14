@@ -127,9 +127,7 @@ xdg-open Yamazaki_Model_Visualizer_Tire.html
 
 タイヤと路面の接触形状を楕円形と仮定します。
 
-$$
-\frac{x^2}{a^2}+\frac{y^2}{b^2}\le1
-$$
+$$\frac{x^2}{a^2}+\frac{y^2}{b^2}\le1$$
 
 接触楕円内における法線圧力分布
 
