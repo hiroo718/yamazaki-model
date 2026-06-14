@@ -34,7 +34,7 @@ This tool implements the Yamazaki tire friction model, integrating the Brush Mod
 👉 **https://hiroo718.github.io/yamazaki-model/Yamazaki_Model_Visualizer_Tire.html**
 
 ### ステップ 1 — リポジトリをクローン
-```bash
+</> bash
 [https://github.com/hiroo718/yamazaki-model.git](https://github.com/hiroo718/yamazaki-model.git)
 ```
 
