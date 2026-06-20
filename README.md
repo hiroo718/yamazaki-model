@@ -200,17 +200,11 @@ $$
 弾性せん断応力は、
 
 $$
-f_{x,e}(x,y)
-=
-K_x s_x
-\frac{x_e(y)-x}{2x_e(y)}
+f_{x,e}(x,y) = K_x s_x\frac{x_e(y)-x}{2x_e(y)}
 $$
 
 $$
-f_{y,e}(x,y)
-=
-K_y s_y
-\frac{y_e(x)-y}{2y_e(x)}
+f_{y,e}(x,y) = K_y s_y\frac{y_e(x)-y}{2y_e(x)}
 $$
 
 で与えられます。
@@ -222,11 +216,7 @@ $$
 接線応力の大きさを
 
 $$
-|f_e|
-=
-\sqrt{
-f_{x,e}^2+f_{y,e}^2
-}
+|f_e| = \sqrt{f_{x,e}^2+f_{y,e}^2}
 $$
 
 とすると、
@@ -240,10 +230,7 @@ $$
 滑り状態では、
 
 $$
-\mathbf{f}
-=
-\mu_d(w)p(x,y)
-\frac{\mathbf{f}_e}{|f_e|}
+\mathbf{f} = \mu_d(w)p(x,y)\frac{\mathbf{f}_e}{|f_e|}
 $$
 
 とします。
@@ -255,13 +242,7 @@ $$
 動摩擦係数は Stribeck 型モデルを用いて、
 
 $$
-\mu_d(w)
-=
-\mu_s
-\left[
-(1-\alpha)e^{-\beta w}
-+\alpha
-\right]
+\mu_d(w) = \mu_s\left[(1-\alpha)e^{-\beta w}+\alpha\right]
 $$
 
 と表現します。
@@ -281,17 +262,11 @@ $$
 接触領域全体で積分して、
 
 $$
-F_x
-=
-\iint_{\Omega}
-f_x(x,y)\,dA
+F_x = \iint_{\Omega}f_x(x,y)\,dA
 $$
 
 $$
-F_y
-=
-\iint_{\Omega}
-f_y(x,y)\,dA
+F_y = \iint_{\Omega}f_y(x,y)\,dA
 $$
 
 を求めます。
