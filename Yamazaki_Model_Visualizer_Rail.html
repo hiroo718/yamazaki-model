@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>Yamazaki Model Visualizer</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600&family=Noto+Sans+JP:wght@300;400&display=swap');
+
+  :root {
+    --bg: #0d0f14;
+    --panel: #13161e;
+    --border: #1e2330;
+    --accent: #00c8ff;
+    --accent2: #ff4466;
+    --text: #c8d0e0;
+    --text-dim: #505870;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Noto Sans JP', sans-serif;
+    font-weight: 300;
+    min-height: 100vh;
+    padding: 20px;
+  }
+
+  header {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 14px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  header h1 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--accent);
+    letter-spacing: 0.05em;
+  }
+
+  header span {
+    font-size: 14px;
+    color: var(--text-dim);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .layout {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    gap: 16px;
+  }
+
+  /* コントロールパネル */
+  .controls {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .ctrl-group h3 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    letter-spacing: 0.18em;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .ctrl-row {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 10px;
+  }
+  .ctrl-row:last-child { margin-bottom: 0; }
+
+  .ctrl-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--text);
+  }
+  .ctrl-label .val { color: var(--accent); font-weight: 600; }
+
+  input[type=range] {
+    width: 100%;
+    -webkit-appearance: none;
+    height: 2px;
+    background: var(--border);
+    border-radius: 1px;
+    outline: none;
+    cursor: pointer;
+  }
+  input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 11px; height: 11px;
+    background: var(--accent);
+    border-radius: 50%;
+    box-shadow: 0 0 5px var(--accent);
+  }
+
+  .stats-box {
+    background: #0a0c10;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+  }
+  .stat-line {
+    display: flex;
+    justify-content: space-between;
+    padding: 3px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .stat-line:last-child { border-bottom: none; }
+  .stat-line .k { color: var(--text-dim); }
+  .stat-line .v { color: var(--accent); font-weight: 600; }
+
+  .legend {
+    display: flex;
+    gap: 12px;
+    font-size: 14px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .legend span { display: flex; align-items: center; gap: 5px; }
+  .swatch { width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
+
+  /* メインエリア */
+  .main { display: flex; flex-direction: column; gap: 16px; }
+
+  .chart-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px;
+  }
+
+  .panel {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px;
+  }
+
+  .panel h2 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    letter-spacing: 0.12em;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  canvas { display: block; border-radius: 4px; background: #080a0e; }
+
+  .tabs { display: flex; gap: 4px; margin-bottom: 10px; }
+  .tab {
+    font-family: 'JetBrains Mono', monospace;
+    font-size:14px;
+    padding: 4px 10px;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text-dim);
+    cursor: pointer;
+    letter-spacing: 0.05em;
+  }
+  .tab.active {
+    background: var(--accent);
+    color: #000;
+    border-color: var(--accent);
+    font-weight: 600;
+  }
+
+  .params-note {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 16px;
+    color: var(--text-dim);
+    background: #0a0c10;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 8px;
+    line-height: 1.8;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>YAMAZAKI MODEL VISUALIZER</h1>
+  <span>Brush & Hertz Contact Model — Dr.Hiroo Yamazaki / May 2026</span>
+</header>
+
+<div class="layout">
+
+  <!-- コントロールパネル -->
+  <div class="controls">
+
+    <div class="ctrl-group">
+      <h3>固定パラメータ（cond=1）</h3>
+      <div class="params-note">
+        a = 12.90 mm<br>
+        b = 8.01 mm<br>
+        Fz = 14.76 kN<br>
+        Kx=Ky = 8.08 GPa<br>
+        v = 24 km/h<br>
+        N = M = 60
+      </div>
+    </div>
+
+    <div class="ctrl-group">
+      <h3>スリップ率</h3>
+      <div class="ctrl-row">
+        <div class="ctrl-label"><span>sx (縦)</span><span class="val" id="v-sx">0.10</span></div>
+        <input type="range" id="sx" min="0" max="100" value="10">
+      </div>
+      <div class="ctrl-row">
+        <div class="ctrl-label"><span>sy (横)</span><span class="val" id="v-sy">0.00</span></div>
+        <input type="range" id="sy" min="0" max="100" value="0">
+      </div>
+    </div>
+
+    <div class="ctrl-group">
+      <h3>摩擦パラメータ</h3>
+      <div class="ctrl-row">
+        <div class="ctrl-label"><span>μs</span><span class="val" id="v-mus">0.48</span></div>
+        <input type="range" id="mus" min="10" max="100" value="48">
+      </div>
+      <div class="ctrl-row">
+        <div class="ctrl-label"><span>alfa (μ∞/μ0)</span><span class="val" id="v-alfa">0.44</span></div>
+        <input type="range" id="alfa" min="0" max="100" value="44">
+      </div>
+      <div class="ctrl-row">
+        <div class="ctrl-label"><span>beta</span><span class="val" id="v-beta">0.25</span></div>
+        <input type="range" id="beta" min="1" max="100" value="25">
+      </div>
+    </div>
+
+    <div class="ctrl-group">
+      <h3>計算結果</h3>
+      <div class="stats-box">
+        <div class="stat-line"><span class="k">Fx/Fz</span><span class="v" id="s-fx">—</span></div>
+        <div class="stat-line"><span class="k">Fy/Fz</span><span class="v" id="s-fy">—</span></div>
+        <div class="stat-line"><span class="k">μd</span><span class="v" id="s-mud">—</span></div>
+        <div class="stat-line"><span class="k">すべり域</span><span class="v" id="s-slip">—</span></div>
+        <div class="stat-line"><span class="k">粘着域</span><span class="v" id="s-adh">—</span></div>
+      </div>
+    </div>
+
+    <div class="legend">
+      <span><span class="swatch" style="background:#2a6dd9"></span>粘着</span>
+      <span><span class="swatch" style="background:#d93a3a"></span>すべり</span>
+    </div>
+
+  </div>
+
+  <!-- メインエリア -->
+  <div class="main">
+
+    <!-- 上段：3つのキャンバス -->
+    <div class="chart-row">
+      <div class="panel">
+        <h2>粘着 / すべり域</h2>
+        <canvas id="c-slip" width="260" height="240"></canvas>
+      </div>
+      <div class="panel">
+        <h2>接線力 |f| 分布</h2>
+        <canvas id="c-fx" width="260" height="240"></canvas>
+      </div>
+      <div class="panel">
+        <h2>圧力分布 p(x,y)</h2>
+        <canvas id="c-p" width="260" height="240"></canvas>
+      </div>
+    </div>
+
+    <!-- 下段：トラクション特性グラフ -->
+    <div class="panel">
+      <h2>トラクション特性</h2>
+      <div class="tabs">
+        <button class="tab active" id="tab-sx" onclick="setTab('sx')">縦すべり sx sweep</button>
+        <button class="tab" id="tab-sy" onclick="setTab('sy')">横すべり sy sweep</button>
+      </div>
+      <canvas id="c-graph" width="800" height="200" style="width:100%;height:200px"></canvas>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// ===== Dr.Yamazaki Python コード cond=1（鉄輪/レール・Polach比較）のパラメータをそのまま移植 =====
+// Hertz接触理論から a, b, Kx, Ky を算出（Pythonコードと同一の計算式）
+const g    = 9.80665;
+const E    = 210e9;          // ヤング率 [Pa]
+const Nu   = 0.3;            // ポアソン比
+
+const v0   = (16+32)/2/3.6;  // 速度 [m/s] = 24 km/h
+const Fz   = (29.5/2)*1e3*g; // 垂直荷重 [N]
+const mu_s_default = 0.4*1.2;// 静止摩擦係数 μs（=0.48）
+const alfa_default  = 0.44;  // μ∞/μ0
+const beta_default  = 0.25;  // [s/m]
+
+const K1 = (1-Nu*Nu)/(Math.PI*E);
+const K2 = (1-Nu*Nu)/(Math.PI*E);
+const R11 = 0.508, R12 = 1e6, R21 = 1e6, R22 = R12;
+const K3 = 0.5*(1/R11 + 1/R12 + 1/R21 + 1/R22);
+const ke = 1/10;
+const m_  = 1.31, n_ = 0.813;
+const a   = m_*Math.cbrt(3*Math.PI*Fz*(K1+K2)/(4*K3));  // 接触楕円 半長軸 [m]
+const b   = n_*Math.cbrt(3*Math.PI*Fz*(K1+K2)/(4*K3));  // 接触楕円 半短軸 [m]
+const Kx  = ke*E/(2*(1+Nu));   // 接線方向接触剛性 [Pa]
+const Ky  = ke*E/(2*(1+Nu));
+
+const N   = 60, M = 60;    // メッシュ（HTML用に軽量化）
+
+const dx = (2*a)/(N-1), dy = (2*b)/(M-1);
+const xs = Array.from({length:N}, (_,i) => -a + i*dx);
+const ys = Array.from({length:M}, (_,j) => -b + j*dy);
+
+// aa(=xe), bb(=ye) をあらかじめ計算（接触楕円の局所半幅）
+const XE = [], YE = [], MASK = [], ZETA = [], P0 = [];
+for (let j=0; j<M; j++) {
+  XE.push([]); YE.push([]); MASK.push([]); ZETA.push([]); P0.push([]);
+  for (let i=0; i<N; i++) {
+    const X=xs[i], Y=ys[j];
+    const inMask = (X*X/(a*a)+Y*Y/(b*b)) <= 1;
+    const zeta = Math.max(0, 1-(X/a)**2-(Y/b)**2);
+    MASK[j].push(inMask);
+    ZETA[j].push(zeta);
+    XE[j].push(a*Math.sqrt(Math.max(0,1-(Y/b)**2)));   // aa
+    YE[j].push(b*Math.sqrt(Math.max(0,1-(X/a)**2)));   // bb
+    P0[j].push(inMask ? 3*Fz/(2*Math.PI*a*b)*Math.sqrt(zeta) : 0);
+  }
+}
+
+let currentTab = 'sx';
+
+// ===== 計算（Pythonコードの粘着・すべり判定をそのまま移植）=====
+function compute(sx, sy, mu_s, alfa, beta){
+  const w = Math.sqrt(sx * sx + sy * sy) * v0;
+  const mu_d = mu_s * ((1 - alfa) * Math.exp(-beta * w) + alfa);
+
+  let slipN = 0, adhesN = 0, totalFx = 0, totalFy = 0;
+  const slipMap = [], fxMap = [], fyMap = [], pMap = [];
+
+  for (let j = 0; j < M; j++) {
+    slipMap.push([]); fxMap.push([]); fyMap.push([]); pMap.push([]);
+    for (let i = 0; i < N; i++) {
+      const inMask = MASK[j][i];
+      if (!inMask) {
+        slipMap[j].push(false); fxMap[j].push(0); fyMap[j].push(0); pMap[j].push(0);
+        continue;
+      }
+
+      const p  = P0[j][i];
+      const aa = XE[j][i];
+      const bb = YE[j][i];
+
+      // 粘着時の弾性剪断応力: tx = Kx*sx*(aa-x)/(2aa), ty = Ky*sy*(bb-y)/(2bb)
+      const tx0 = Kx * sx * (aa - xs[i]) / (2*aa);
+      const ty0 = Ky * sy * (bb - ys[j]) / (2*bb);
+      const tau_mag = Math.sqrt(tx0*tx0 + ty0*ty0);
+
+      // 摩擦制限（粘着・すべり判定）
+      const slip = (tau_mag > mu_s * p);
+      let tx = tx0, ty = ty0;
+      if (slip) {
+        const ratio = (mu_d * p) / (tau_mag + 1e-12);
+        tx = ratio * tx0;
+        ty = ratio * ty0;
+      }
+
+      slipMap[j].push(slip);
+      fxMap[j].push(tx);
+      fyMap[j].push(ty);
+      pMap[j].push(p);
+
+      if (slip) slipN++; else adhesN++;
+      totalFx += tx * dx * dy;
+      totalFy += ty * dx * dy;
+    }
+  }
+  return { slipMap, fxMap, fyMap, pMap, slipN, adhesN, totalFx, totalFy, mu_d };
+}
+
+// ===== トラクション特性（50点）=====
+// sx sweep: sxを0→1, syはスライダー固定値
+// sy sweep: syを0→1, sxはスライダー固定値
+function computeGraph(mu_s, alfa, beta, tab, fixed_sx, fixed_sy) {
+  const arr = Array.from({length:50}, (_,i) => i/49);
+  const rx=[], ry=[];
+  for (const s of arr) {
+    const sx = tab==='sx' ? s : fixed_sx;
+    const sy = tab==='sy' ? s : fixed_sy;
+    const d  = compute(sx, sy, mu_s, alfa, beta);
+    rx.push(d.totalFx/Fz);
+    ry.push(d.totalFy/Fz);
+  }
+  return {arr, rx, ry};
+}
+
+// ===== 描画：粘着/すべり域 =====
+function drawSlip(canvas, data) {
+  const ctx=canvas.getContext('2d');
+  const W=canvas.width, H=canvas.height;
+  ctx.fillStyle='#080a0e'; ctx.fillRect(0,0,W,H);
+  const cw=W/N, ch=H/M;
+
+  for (let j=0;j<M;j++) for (let i=0;i<N;i++) {
+    if (!MASK[j][i]) continue;
+    ctx.fillStyle = data.slipMap[j][i] ? '#d93a3a' : '#2a6dd9';
+    ctx.fillRect(i*cw, j*ch, cw+1, ch+1);
+  }
+
+  ctx.strokeStyle='rgba(200,208,224,0.35)'; ctx.lineWidth=1.5;
+  ctx.beginPath(); ctx.ellipse(W/2,H/2,W/2-1,H/2-1,0,0,2*Math.PI); ctx.stroke();
+  ctx.strokeStyle='rgba(255,255,255,0.1)'; ctx.lineWidth=0.5;
+  ctx.beginPath(); ctx.moveTo(W/2,0); ctx.lineTo(W/2,H); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(0,H/2); ctx.lineTo(W,H/2); ctx.stroke();
+  ctx.fillStyle='rgba(200,208,224,0.4)';
+  ctx.font='9px JetBrains Mono,monospace';
+  ctx.textAlign='right'; ctx.fillText('+x→',W-3,H/2-4);
+  ctx.textAlign='center'; ctx.fillText('+y↑',W/2,11);
+}
+
+// ===== 描画：fx分布 =====
+function drawFx(canvas, data) {
+  const ctx=canvas.getContext('2d');
+  const W=canvas.width, H=canvas.height;
+  ctx.fillStyle='#080a0e';
+  ctx.fillRect(0,0,W,H);
+
+  let maxF = 0;
+
+  // 合力の最大値
+  for (let j=0;j<M;j++) {
+    for (let i=0;i<N;i++) {
+      const f = Math.hypot(data.fxMap[j][i], data.fyMap[j][i]);
+      maxF = Math.max(maxF, f);
+    }
+  }
+
+  const cw=W/N, ch=H/M;
+
+  for (let j=0;j<M;j++) {
+    for (let i=0;i<N;i++) {
+      if (!MASK[j][i]) continue;
+
+      const f = Math.hypot(data.fxMap[j][i], data.fyMap[j][i]);
+      const v = maxF > 0 ? f / maxF : 0;
+
+      const r = Math.round(v * 220);
+      const g = Math.round(v * 90);
+      const b = Math.round((1 - v) * 170);
+
+      ctx.fillStyle = `rgb(${r},${g},${b})`;
+      ctx.fillRect(i*cw, j*ch, cw+1, ch+1);
+    }
+  }
+
+  ctx.strokeStyle='rgba(200,208,224,0.35)';
+  ctx.lineWidth=1.5;
+  ctx.beginPath();
+  ctx.ellipse(W/2,H/2,W/2-1,H/2-1,0,0,2*Math.PI);
+  ctx.stroke();
+
+  ctx.strokeStyle='rgba(255,255,255,0.1)';
+  ctx.lineWidth=0.5;
+  ctx.beginPath(); ctx.moveTo(W/2,0); ctx.lineTo(W/2,H); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(0,H/2); ctx.lineTo(W,H/2); ctx.stroke();
+
+  ctx.fillStyle='rgba(200,208,224,0.4)';
+  ctx.font='12px JetBrains Mono,monospace';
+  ctx.textAlign='center';
+  ctx.fillText('|f| = sqrt(fx² + fy²)', W/2, H-4);
+}
+
+// ===== 描画：圧力分布 =====
+function drawP(canvas) {
+  const ctx=canvas.getContext('2d');
+  const W=canvas.width, H=canvas.height;
+  ctx.fillStyle='#080a0e'; ctx.fillRect(0,0,W,H);
+
+  let maxP=0;
+  for (let j=0;j<M;j++) for (let i=0;i<N;i++) maxP=Math.max(maxP,P0[j][i]);
+
+  const cw=W/N, ch=H/M;
+  for (let j=0;j<M;j++) for (let i=0;i<N;i++) {
+    if (!MASK[j][i]) continue;
+    const v=maxP>0?P0[j][i]/maxP:0;
+    const r=Math.round(v*220);
+    const g2=Math.round(v*120);
+    ctx.fillStyle=`rgb(${r},${g2},${Math.round((1-v)*180)})`;
+    ctx.fillRect(i*cw,j*ch,cw+1,ch+1);
+  }
+
+  ctx.strokeStyle='rgba(200,208,224,0.35)'; ctx.lineWidth=1.5;
+  ctx.beginPath(); ctx.ellipse(W/2,H/2,W/2-1,H/2-1,0,0,2*Math.PI); ctx.stroke();
+  ctx.fillStyle='rgba(200,208,224,0.4)';
+  ctx.font='12px JetBrains Mono,monospace';
+  ctx.textAlign='center';
+  ctx.fillText(`max=${(maxP/1e6).toFixed(1)} MPa`,W/2,H-4);
+}
+
+// ===== 描画：グラフ =====
+function drawGraph(canvas, gdata, tab) {
+  const W=canvas.offsetWidth||800, H=200;
+  canvas.width=W; canvas.height=H;
+  const ctx=canvas.getContext('2d');
+  ctx.fillStyle='#080a0e'; ctx.fillRect(0,0,W,H);
+
+  const pad={l:52,r:20,t:15,b:36};
+  const pw=W-pad.l-pad.r, ph=H-pad.t-pad.b;
+
+  // 動的スケール
+  const allVals = [...gdata.rx, ...gdata.ry].map(Math.abs);
+  const maxY = Math.max(0.05, ...allVals) * 1.15;
+
+  // グリッド
+  for (let i=0;i<=5;i++) {
+    const yy=pad.t+ph*(1-i/5);
+    ctx.strokeStyle='rgba(255,255,255,0.05)'; ctx.lineWidth=1;
+    ctx.beginPath(); ctx.moveTo(pad.l,yy); ctx.lineTo(pad.l+pw,yy); ctx.stroke();
+    ctx.fillStyle='rgba(200,208,224,0.35)';
+    ctx.font='12px JetBrains Mono,monospace';
+    ctx.textAlign='right';
+    ctx.fillText((i*maxY/5).toFixed(3),pad.l-5,yy+3);
+  }
+  for (let i=0;i<=5;i++) {
+    const xx=pad.l+pw*i/5;
+    ctx.strokeStyle='rgba(255,255,255,0.05)'; ctx.lineWidth=1;
+    ctx.beginPath(); ctx.moveTo(xx,pad.t); ctx.lineTo(xx,pad.t+ph); ctx.stroke();
+    ctx.fillStyle='rgba(200,208,224,0.35)';
+    ctx.font='12px JetBrains Mono,monospace';
+    ctx.textAlign='center';
+    ctx.fillText((i*0.2).toFixed(1),xx,H-6);
+  }
+
+  const toX=s=>pad.l+pw*s;
+  const toY=v=>pad.t+ph*(1-v/maxY);
+
+  // Longitudinal
+  ctx.strokeStyle='#00c8ff'; ctx.lineWidth=2; ctx.setLineDash([]);
+  ctx.beginPath();
+  gdata.arr.forEach((s,i)=>{
+    i===0?ctx.moveTo(toX(s),toY(gdata.rx[i])):ctx.lineTo(toX(s),toY(gdata.rx[i]));
+  });
+  ctx.stroke();
+
+  // Lateral
+  ctx.strokeStyle='#ff4466'; ctx.lineWidth=2; ctx.setLineDash([5,4]);
+  ctx.beginPath();
+  gdata.arr.forEach((s,i)=>{
+    i===0?ctx.moveTo(toX(s),toY(gdata.ry[i])):ctx.lineTo(toX(s),toY(gdata.ry[i]));
+  });
+  ctx.stroke();
+  ctx.setLineDash([]);
+
+  // 凡例
+  const lx=pad.l+pw-160, ly=pad.t+10;
+  ctx.strokeStyle='#00c8ff'; ctx.lineWidth=2; ctx.setLineDash([]);
+  ctx.beginPath(); ctx.moveTo(lx,ly); ctx.lineTo(lx+20,ly); ctx.stroke();
+  ctx.fillStyle='rgba(200,208,224,0.6)'; ctx.font='12px JetBrains Mono,monospace';
+  ctx.textAlign='left'; ctx.fillText('Longitudinal (Fx)',lx+25,ly+3);
+  ctx.strokeStyle='#ff4466'; ctx.setLineDash([5,4]);
+  ctx.beginPath(); ctx.moveTo(lx,ly+14); ctx.lineTo(lx+20,ly+14); ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.fillText('Lateral (Fy)',lx+25,ly+17);
+
+  // 軸ラベル
+  ctx.fillStyle='rgba(200,208,224,0.4)'; ctx.textAlign='center';
+  ctx.fillText(tab==='sx'?'slip rate sx [-]':'creep sy [-]',pad.l+pw/2,H-1);
+}
+
+// ===== メイン更新 =====
+function update() {
+  const sx   = document.getElementById('sx').value/100;
+  const sy   = document.getElementById('sy').value/100;
+  const mu_s = document.getElementById('mus').value/100;
+  const alfa = document.getElementById('alfa').value/100;
+  const beta = document.getElementById('beta').value/100;
+
+  document.getElementById('v-sx').textContent   = sx.toFixed(2);
+  document.getElementById('v-sy').textContent   = sy.toFixed(2);
+  document.getElementById('v-mus').textContent  = mu_s.toFixed(2);
+  document.getElementById('v-alfa').textContent = alfa.toFixed(2);
+  document.getElementById('v-beta').textContent = beta.toFixed(2);
+
+  const data = compute(sx, sy, mu_s, alfa, beta);
+
+  drawSlip(document.getElementById('c-slip'), data);
+  drawFx  (document.getElementById('c-fx'),   data);
+  drawP   (document.getElementById('c-p'));
+
+  const tot = data.slipN+data.adhesN;
+  document.getElementById('s-fx').textContent  = (data.totalFx/Fz).toFixed(4);
+  document.getElementById('s-fy').textContent  = (data.totalFy/Fz).toFixed(4);
+  document.getElementById('s-mud').textContent = data.mu_d.toFixed(4);
+  document.getElementById('s-slip').textContent=
+    `${data.slipN} (${tot>0?Math.round(data.slipN/tot*100):0}%)`;
+  document.getElementById('s-adh').textContent =
+    `${data.adhesN} (${tot>0?Math.round(data.adhesN/tot*100):0}%)`;
+
+  const gdata = computeGraph(mu_s, alfa, beta, currentTab, sx, sy);
+  drawGraph(document.getElementById('c-graph'), gdata, currentTab);
+}
+
+function setTab(tab) {
+  currentTab = tab;
+  document.getElementById('tab-sx').className='tab'+(tab==='sx'?' active':'');
+  document.getElementById('tab-sy').className='tab'+(tab==='sy'?' active':'');
+  update();
+}
+
+['sx','sy','mus','alfa','beta'].forEach(id=>
+  document.getElementById(id).addEventListener('input', update)
+);
+window.addEventListener('resize', update);
+update();
+</script>
+</body>
+</html>
