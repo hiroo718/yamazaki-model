@@ -4,7 +4,7 @@
 **Author:** Dr. Hiroo Yamazaki — *May 9th 2026*
 
 ---
-
+The Yamazaki Model aims to bridge automotive tire dynamics and railway adhesion theory through a common rolling-contact formulation.
 Yamazaki Model Visualizer is an open-source Executable Engineering Model (EEM) for tire-road and wheel-rail contact mechanics.
 
 Yamazaki Model Visualizer は、タイヤ・路面および車輪・レール間接触力学を対象としたオープンソース実行可能工学モデル（EEM）です。
