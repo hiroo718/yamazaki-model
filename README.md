@@ -25,6 +25,9 @@ A self-contained, zero-dependency browser tool for real-time visualization of wh
 
 本ツールは **山崎モデル（Yamazaki Model）** を実装したインタラクティブビジュアライザです。
 
+![Figure 1](https://github.com/hiroo718/yamazaki-model/blob/main/figure1.gif)
+![Figure 2](https://github.com/hiroo718/yamazaki-model/blob/main/figure2.gif)
+
 Brush Model（ブラシモデル）、Hertz 楕円接触圧力、および速度依存動摩擦モデルを統合し、接触楕円内の粘着／すべり領域、接線力分布、およびトラクション特性をリアルタイムに計算・可視化します。
 
 This tool implements the Yamazaki friction model by integrating the Brush Model, Hertzian elliptical contact pressure, and velocity-dependent dynamic friction.
