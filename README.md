@@ -423,3 +423,6 @@ For questions or feedback:
 6. Ohyama, T., RTRI Report, Vol. 1, No. 2, 1987.
 
 7. Kalker, J. J., *Survey of Wheel-Rail Rolling Contact Theory*, Vehicle System Dynamics, 1979.
+
+8. 酒井秀男, 復刻版-タイヤ工学入門から応用まで, 2020, 978-4-87687-373-9
+   Sakai, H., Revival Editon: Mechanics of Automotive Tires, Grand Prix BOOK PUBLISHING CO.LTD., 2020.
