@@ -34,18 +34,14 @@ This tool implements the Yamazaki friction model by integrating the Brush Model,
 
 It renders adhesion/slip zone maps, tangential force distributions, and traction characteristic curves in real time.
 
-## 実測データとの比較検証：モデルの妥当性 / Experimental Validation
 
-本モデル（Yamazaki Model）の妥当性を検証するため、日本のタイヤ力学で著名な酒井秀男先生の『タイヤ工学 —入門から応用まで—』（グランプリ出版）に掲載されている実測タイヤデータと比較を行い検証した。
+本モデル（Yamazaki Model）の妥当性を検証するため、日本のタイヤのモデル化で著名な酒井秀男先生の『タイヤ工学 —入門から応用まで—』（グランプリ出版）に掲載されている実測タイヤデータと比較を行い検証した。
 
 * **左図（純縦スリップ特性）：** 微小スリップ領域から、トラクションピーク（スリップ比約0.2）、および飽和・大きなスリップ領域へ移行後の速度依存によるタイヤ・路面間の摩擦係数の低下にいたるまで、実測の挙動を正確に再現されている。
 * **右図：** スリップ角 $\beta = 35^\circ$ という、大きな横滑り条件においても、本モデルは追加の補正項なしで実測データと完璧に一致している。
 
 接触面内の応力場をベクトル合成で解くという非常にシンプルな数理で、かつ実測データを高精度に再現できる点が、本モデルの最大のブレイクスルーである。
 
----
-
-### English Version
 
 To validate the fidelity of the Yamazaki Model, the simulation results were benchmarked against experimental tire data sourced from the prominent literature *"Introduction to Tire Engineering: From Basics to Applications"* by Dr. Hideo Sakai, a leading authority on vehicle tribology in Japan.
 
