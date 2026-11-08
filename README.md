@@ -34,6 +34,28 @@ This tool implements the Yamazaki friction model by integrating the Brush Model,
 
 It renders adhesion/slip zone maps, tangential force distributions, and traction characteristic curves in real time.
 
+## 実測データとの比較検証：モデルの妥当性 / Experimental Validation
+
+本モデル（Yamazaki Model）の妥当性を検証するため、日本のタイヤ力学で著名な酒井秀男先生の『タイヤ工学 —入門から応用まで—』（グランプリ出版）に掲載されている実測タイヤデータと比較を行い検証した。
+
+* **左図（純縦スリップ特性）：** 微小スリップ領域から、トラクションピーク（スリップ比約0.2）、および飽和・大きなスリップ領域へ移行後の速度依存によるタイヤ・路面間の摩擦係数の低下にいたるまで、実測の挙動を正確に再現されている。
+* **右図：** スリップ角 $\beta = 35^\circ$ という、大きな横滑り条件においても、本モデルは追加の補正項なしで実測データと完璧に一致している。
+
+接触面内の応力場をベクトル合成で解くという非常にシンプルな数理で、かつ実測データを高精度に再現できる点が、本モデルの最大のブレイクスルーである。
+
+---
+
+### English Version
+
+To validate the fidelity of the Yamazaki Model, the simulation results were benchmarked against experimental tire data sourced from the prominent literature *"Introduction to Tire Engineering: From Basics to Applications"* by Dr. Hideo Sakai, a leading authority on vehicle tribology in Japan.
+
+* **Left Plot (Pure Longitudinal Slip):** The model accurately replicates the real-world behavior across all regimes—from the initial micro-slip region and the traction peak (around a slip ratio of 0.2) to the subsequent saturation and the velocity-dependent decay of the friction coefficient in the macro-slip region.
+* **Right Plot (High Side-Slip Angle):** Even under an extreme drifting condition with a large slip angle of $\beta = 35^\circ$, the Yamazaki Model achieves a seamless and perfect fit with the experimental data without requiring any ad-hoc empirical correction terms.
+
+The ultimate breakthrough of this model lies in its ability to deliver high-fidelity replication of actual experimental data through a remarkably elegant and simple mathematical structure—solving the contact patch stress field via straightforward vector composition.
+
+
+
 物理法則（接触圧力分布・ブラシせん断応力・粘着すべり判定・速度依存摩擦則）は Rail / Tire 共通です。異なるのは入力パラメータ（接触楕円寸法、荷重、剛性、摩擦係数、速度）のみであり、Python 参照モデルの `cond` 番号に対応しています。
 
 - **Rail 版**（`Yamazaki_Model_Visualizer_Rail.html`）：鉄輪／レール接触、`cond = 1`（Polach比較条件）に対応
