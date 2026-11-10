@@ -369,7 +369,6 @@ yamazaki-model/
 - Aligned both browser implementations with the Python reference model: Rail (`cond = 1`) and Tire (`cond = 3`)
 - Updated default parameters for each tool accordingly
 - Made $K_x$ and $K_y$ independently adjustable via logarithmic sliders (Rail: 1–90 GPa, Tire: 0.1–100 MPa), moved out of the Fixed Parameters table
-- Removed experimental comparison figures
 - Revised the README documentation to cover both Rail and Tire tools
 
 ### v1.0 (May 9, 2026)
